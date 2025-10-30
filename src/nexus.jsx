@@ -6,7 +6,7 @@ const CARD_MAX   = 980;      // largeur max (px)
 const GAP_MIN    = 12;       // espacement min entre cartes
 const GAP_MAX    = 24;       // espacement max
 const GAP_RATIO  = 0.020;    // ↑ un poil (vs 0.018) pour respirer
-const CENTER_BIAS = 0;     // ADDED : Décalage fin du carrousel (px). Négatif => décale à gauche
+const CENTER_BIAS = 0;       // Décalage fin du carrousel (px). Négatif => décale à gauche
 
 // Helper : largeur de viewport SANS scrollbar (aligne avec left-1/2 CSS)
 const vwNoScrollbar = () =>
@@ -109,7 +109,6 @@ export default function NexusPage() {
       ),
     },
 
-
     // ==================== TEASER VIDÉO (9:16) ====================
     {
       id: "teaser",
@@ -121,8 +120,11 @@ export default function NexusPage() {
             <video
               src="/teaser.mp4"            // <- place /public/teaser.mp4
               poster="/teaser-poster.jpg"  // <- optionnel
+              autoPlay  // MOBILE
+              muted     // MOBILE
+              loop      // MOBILE
               controls
-              playsInline
+              playsInline // MOBILE
               className="h-full w-full object-cover"
             />
           </div>
@@ -181,19 +183,17 @@ export default function NexusPage() {
 
               <div className="flex items-center gap-8">
                 <img
-                src="/instagram.png"
-                alt="Instagram"
-                onClick={()=>window.open("https://www.instagram.com/n3x.x.xus?igsh=MW1yZ2Y5aHF5cTZmaA%3D%3D&utm_source=qr","_blank")}
-                className="cursor-pointer hover:opacity-80 transition shrink-0 object-contain w-16 h-16 md:w-20 md:h-20"
+                  src="/instagram.png"
+                  alt="Instagram"
+                  onClick={()=>window.open("https://www.instagram.com/n3x.x.xus?igsh=MW1yZ2Y5aHF5cTZmaA%3D%3D&utm_source=qr","_blank")}
+                  className="cursor-pointer hover:opacity-80 transition shrink-0 object-contain w-16 h-16 md:w-20 md:h-20"
                 />
-                
                 <img
-                src="/tiktok.png"
-                alt="TikTok"
-                onClick={()=>window.open("https://www.tiktok.com/@n33x.us?_t=ZN-8zwXKBjcZWA&_r=1","_blank")}
-                className="cursor-pointer hover:opacity-80 transition shrink-0 object-contain w-16 h-16 md:w-20 md:h-20"
+                  src="/tiktok.png"
+                  alt="TikTok"
+                  onClick={()=>window.open("https://www.tiktok.com/@n33x.us?_t=ZN-8zwXKBjcZWA&_r=1","_blank")}
+                  className="cursor-pointer hover:opacity-80 transition shrink-0 object-contain w-16 h-16 md:w-20 md:h-20"
                 />
-                
               </div>
             </div>
           </div>
@@ -214,13 +214,25 @@ export default function NexusPage() {
   useEffect(()=>{
     const compute = () => {
       if (typeof window === "undefined") return;
-      const cw = Math.min(window.innerWidth * CARD_RATIO, CARD_MAX);
-      const gp = Math.max(GAP_MIN, Math.min(GAP_MAX, window.innerWidth * GAP_RATIO));
-      const sp = (window.innerWidth - cw) / 2; // pour snap-center
+
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const isMobile = w < 768;                 // MOBILE
+
+      // Largeur carte : un peu plus large sur mobile pour remplir sans dépasser
+      const ratio = isMobile ? 0.78 : CARD_RATIO;                          // MOBILE
+      const cw = Math.min(w * ratio, isMobile ? 420 : CARD_MAX);           // MOBILE
+
+      // Gap : plus petit sur mobile
+      const gp = isMobile ? 10 : Math.max(GAP_MIN, Math.min(GAP_MAX, w * GAP_RATIO)); // MOBILE
+
+      // Padding latéral pour centrer le snap
+      const sp = Math.max(12, (w - cw) / 2);                               // MOBILE
+
       setCardW(cw);
       setGap(gp);
       setSidePad(sp);
-      setVh(window.innerHeight);
+      setVh(h);
     };
     compute();
     window.addEventListener("resize", compute);
@@ -230,11 +242,11 @@ export default function NexusPage() {
   const railRef = useRef(null);
   const [active, setActive] = useState(0);
 
-  // ADDED: ref pour mesurer le centre visuel (logo)
-  const logoRef = useRef(null); // ADDED
+  // ref pour mesurer le centre visuel (logo)
+  const logoRef = useRef(null);
 
-  // ADDED: util qui renvoie le centre visuel (logo si présent, sinon centre viewport)
-  const visualCenter = () => { // ADDED
+  // util qui renvoie le centre visuel (logo si présent, sinon centre viewport)
+  const visualCenter = () => {
     const el = logoRef.current;
     if (el && typeof el.getBoundingClientRect === "function") {
       const r = el.getBoundingClientRect();
@@ -243,7 +255,7 @@ export default function NexusPage() {
     return vwNoScrollbar() / 2 + CENTER_BIAS;
   };
 
-  // Masquer header/footer Shopify sur cette page + 🔧 reset global pour supprimer les bandes blanches
+  // Masquer header/footer Shopify + reset global
   useEffect(()=>{
     const css = document.createElement("style");
     css.textContent = `
@@ -266,7 +278,7 @@ export default function NexusPage() {
     const one = (cardW + gap);
     const setW = baseLen * one;
     const targetCenter = sidePad + setW + 2 * one + cardW / 2; // ← index 2 (série du milieu)
-    const left = targetCenter - visualCenter(); // CHANGED: utilise centre visuel
+    const left = targetCenter - visualCenter();
     rail.scrollLeft = left;
   },[baseLen, cardW, gap, sidePad]);
 
@@ -294,7 +306,7 @@ export default function NexusPage() {
         return;
       }
 
-      const center = x - sidePad - setW + visualCenter(); // CHANGED
+      const center = x - sidePad - setW + visualCenter();
       const idx = Math.round(center / (cardW + gap));
       setActive(mod(idx, baseLen));
     };
@@ -316,7 +328,7 @@ export default function NexusPage() {
 
     // centre de la carte ciblée dans la 2e série (milieu)
     const targetCenter = sidePad + setW + targetIdx * one + cardW / 2;
-    const left = targetCenter - visualCenter(); // CHANGED
+    const left = targetCenter - visualCenter();
     rail.scrollTo({ left, behavior: "smooth" });
   };
 
@@ -337,12 +349,12 @@ export default function NexusPage() {
       </div>
 
       {/* ⬇️ Logo FIXE (ref pour centre visuel) */}
-      <div ref={logoRef} className="fixed top-8 left-1/2 -translate-x-1/2 z-40"> {/* CHANGED: ref ajouté */}
-        <div className="w-[22vw] max-w-[360px] aspect-[5/1] overflow-hidden flex items-center justify-center">
+      <div ref={logoRef} className="fixed z-40 left-1/2 -translate-x-1/2 top-3 md:top-8"> {/* MOBILE + DESKTOP */}
+        <div className="w-[48vw] max-w-[260px] md:w-[22vw] md:max-w-[360px] aspect-[5/1] overflow-hidden flex items-center justify-center"> {/* MOBILE */}
           <img
-            src="/logo.png"   // ← place ton logo dans /public/logo.png
+            src="/logo.png"
             alt="Logo NEXXXUS"
-            className="max-h-full max-w-full object-contain"
+            className="max-h-full max-w-full object-contain pointer-events-none"
           />
         </div>
       </div>
@@ -353,15 +365,18 @@ export default function NexusPage() {
         className="no-scrollbar overflow-x-auto overflow-y-hidden h-screen w-full"
         style={{ scrollSnapType: "x mandatory", paddingLeft: sidePad, paddingRight: sidePad }}
       >
-        <div className="flex items-center h-screen" style={{ gap, paddingTop: "8vh" }}>
+        <div
+          className="flex items-center h-screen"
+          style={{ gap, paddingTop: (vwNoScrollbar() < 768 ? "14vh" : "8vh") }} // MOBILE
+        >
           {triple.map((item, i)=>(
             <CoverCard
               key={`${item.id}-${i}`}
               width={cardW}
-              height={Math.min(vh, 680)}
+              height={Math.min(vh, (vwNoScrollbar() < 768 ? Math.round(vh*0.70) : 680))} // MOBILE
               cardW={cardW}
               gap={gap}
-              centerX={visualCenter()} // ADDED: transmet le centre visuel à la carte
+              centerX={visualCenter()}
             >
               {item.node}
             </CoverCard>
@@ -378,9 +393,9 @@ export default function NexusPage() {
           >
             {i === active ? (
               <img
-                src="/x.png"   // ← place ton fichier dans /public
+                src="/x.png"
                 alt="Active"
-                className="w-5 h-5 object-contain"  // ← un peu plus gros que les ronds
+                className="w-5 h-5 object-contain"
               />
             ) : (
               <span className="w-2.5 h-2.5 rounded-full bg-red-700/30" />
@@ -406,9 +421,8 @@ export default function NexusPage() {
 const mod = (n,m)=>((n%m)+m)%m;
 
 /** Carte coverflow : centre plus imposant, voisines plus tassées */
-function CoverCard({children, width, height, cardW, gap, centerX}) { // CHANGED: centerX ajouté
+function CoverCard({children, width, height, cardW, gap, centerX}) {
   const ref = useRef(null);
-  // État de la lueur (glow)
   const [t, setT] = useState({scale: 1, rotate: 0, opacity: 1, blur: 0, glow: 0, glowScale: 1});
 
   useEffect(()=>{
@@ -417,7 +431,7 @@ function CoverCard({children, width, height, cardW, gap, centerX}) { // CHANGED:
 
     const update = ()=>{
       const r = el.getBoundingClientRect();
-      const center = (typeof centerX === "number" ? centerX : (vwNoScrollbar() / 2 + CENTER_BIAS)); // CHANGED
+      const center = (typeof centerX === "number" ? centerX : (vwNoScrollbar() / 2 + CENTER_BIAS));
       const cardCenter = r.left + r.width / 2;
       const distPx = Math.abs(cardCenter - center);
 
@@ -457,7 +471,7 @@ function CoverCard({children, width, height, cardW, gap, centerX}) { // CHANGED:
         window.removeEventListener("scroll", onScroll, true);
       }
     };
-  }, [cardW, gap, centerX]); // CHANGED: dépend de centerX
+  }, [cardW, gap, centerX]);
 
   return (
     <div

@@ -590,3 +590,12 @@ button.reset:hover:not(:has(> *)) {
 body {
   font-family: 'LegendM54', sans-serif;
 }
+
+/* Menu au-dessus de tout + cliquable */
+.fixed.top-5.left-5 { z-index: 9999 !important; pointer-events: auto; }
+
+/* Petites optimisations mobiles */
+@media (max-width: 767px) {
+  /* Évite que la carte centrale soit trop grande */
+  .cover-card { max-width: 420px; }
+}
