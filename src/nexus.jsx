@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 export default function NexusCarousel() {
@@ -212,7 +213,7 @@ export default function NexusCarousel() {
 
       {/* Carrousel - Centré verticalement et horizontalement */}
       <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85vw] md:w-[40vw] max-w-[450px] md:max-w-[700px]"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] md:w-[28vw] max-w-[360px] md:max-w-[500px]"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
