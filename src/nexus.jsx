@@ -243,10 +243,10 @@ export default function NexusPage() {
   const railRef = useRef(null);
   const [active, setActive] = useState(0);
 
-  // ✅ CORRECTION : Centre visuel basé sur window.innerWidth / 2 (cohérent)
+  // ✅ CORRECTION DESKTOP : Centre visuel = centre exact du viewport
   const visualCenter = () => getViewportWidth() / 2;
 
-  // Masquer header/footer Shopify + reset global
+  // ✅ CORRECTION MOBILE : Bloquer le scroll de la page
   useEffect(()=>{
     const css = document.createElement("style");
     css.textContent = `
@@ -255,7 +255,10 @@ export default function NexusPage() {
         margin: 0 !important;
         padding: 0 !important;
         background: #000 !important;
-        overflow-x: hidden !important;
+        overflow: hidden !important; /* ✅ Bloque le scroll de la page */
+        height: 100vh !important;
+        width: 100vw !important;
+        position: fixed !important; /* ✅ Empêche tout défilement */
       }
     `;
     document.head.appendChild(css);
@@ -324,10 +327,10 @@ export default function NexusPage() {
   };
 
   return (
-    <div className="relative min-h-screen w-screen overflow-hidden bg-black text-red-700">
-      {/* ✅ CORRECTION : Logo AU-DESSUS du menu */}
-      <div className="fixed z-[10000] left-1/2 -translate-x-1/2 top-3 md:top-8">
-        <div className="w-[48vw] max-w-[260px] md:w-[22vw] md:max-w-[360px] aspect-[5/1] overflow-hidden flex items-center justify-center">
+    <div className="fixed inset-0 overflow-hidden bg-black text-red-700">
+      {/* ✅ CORRECTION MOBILE : Logo plus haut et plus grand */}
+      <div className="fixed z-[10000] left-1/2 -translate-x-1/2 top-2 md:top-8">
+        <div className="w-[55vw] max-w-[280px] md:w-[22vw] md:max-w-[360px] aspect-[5/1] overflow-hidden flex items-center justify-center">
           <img
             src="/logo.png"
             alt="Logo NEXXXUS"
@@ -336,13 +339,13 @@ export default function NexusPage() {
         </div>
       </div>
 
-      {/* ✅ CORRECTION : MENU repositionné plus bas sur mobile */}
-      <div className="fixed top-16 md:top-5 left-1/2 md:left-5 -translate-x-1/2 md:translate-x-0 z-[9999] flex items-center gap-2 md:gap-3">
+      {/* ✅ CORRECTION MOBILE : Menu plus compact avec texte plus petit */}
+      <div className="fixed top-[4.5rem] md:top-5 left-1/2 md:left-5 -translate-x-1/2 md:translate-x-0 z-[9999] flex items-center gap-1.5 md:gap-3">
         {slides.map((s, i)=>(
           <button
             key={s.id}
             onClick={()=>goTo(i)}
-            className={`text-[10px] md:text-sm uppercase tracking-wide px-2 py-1 rounded 
+            className={`text-[9px] md:text-sm uppercase tracking-wide px-1.5 md:px-2 py-1 rounded whitespace-nowrap
               ${i===active ? "bg-red-700 text-black" : "text-red-700 hover:text-red-400"}`}
           >
             {s.label}
@@ -353,18 +356,18 @@ export default function NexusPage() {
       {/* RAIL */}
       <div
         ref={railRef}
-        className="no-scrollbar overflow-x-auto overflow-y-hidden h-screen w-full"
+        className="no-scrollbar overflow-x-auto overflow-y-hidden absolute inset-0"
         style={{ scrollSnapType: "x mandatory", paddingLeft: sidePad, paddingRight: sidePad }}
       >
         <div
-          className="flex items-center h-screen"
-          style={{ gap, paddingTop: (getViewportWidth() < 768 ? "22vh" : "8vh") }}
+          className="flex items-center h-full"
+          style={{ gap }}
         >
           {triple.map((item, i)=>(
             <CoverCard
               key={`${item.id}-${i}`}
               width={cardW}
-              height={Math.min(vh, (getViewportWidth() < 768 ? Math.round(vh*0.60) : 680))}
+              height={Math.min(vh, (getViewportWidth() < 768 ? Math.round(vh*0.55) : 680))}
               cardW={cardW}
               gap={gap}
               centerX={visualCenter()}
