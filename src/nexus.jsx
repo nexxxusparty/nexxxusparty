@@ -1,4 +1,3 @@
-
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 
 /** Paramètres d'affichage (tunable simplement) */
@@ -242,9 +241,17 @@ export default function NexusPage() {
 
   const railRef = useRef(null);
   const [active, setActive] = useState(0);
+  const logoRef = useRef(null);
 
-  // ✅ CORRECTION DESKTOP : Centre visuel = centre exact du viewport
-  const visualCenter = () => getViewportWidth() / 2;
+  // ✅ CORRECTION DESKTOP : Centre visuel = position exacte du logo
+  const visualCenter = () => {
+    const logo = logoRef.current;
+    if (logo && typeof logo.getBoundingClientRect === 'function') {
+      const rect = logo.getBoundingClientRect();
+      return rect.left + rect.width / 2;
+    }
+    return getViewportWidth() / 2;
+  };
 
   // ✅ CORRECTION MOBILE : Bloquer le scroll de la page
   useEffect(()=>{
@@ -255,10 +262,10 @@ export default function NexusPage() {
         margin: 0 !important;
         padding: 0 !important;
         background: #000 !important;
-        overflow: hidden !important; /* ✅ Bloque le scroll de la page */
+        overflow: hidden !important;
         height: 100vh !important;
         width: 100vw !important;
-        position: fixed !important; /* ✅ Empêche tout défilement */
+        position: fixed !important;
       }
     `;
     document.head.appendChild(css);
@@ -269,11 +276,17 @@ export default function NexusPage() {
   useEffect(()=>{
     const rail = railRef.current;
     if(!rail) return;
-    const one = (cardW + gap);
-    const setW = baseLen * one;
-    const targetCenter = sidePad + setW + 2 * one + cardW / 2; // ← index 2 (série du milieu)
-    const left = targetCenter - visualCenter();
-    rail.scrollLeft = left;
+    
+    // Petit délai pour s'assurer que le logo est bien rendu
+    const timer = setTimeout(() => {
+      const one = (cardW + gap);
+      const setW = baseLen * one;
+      const targetCenter = sidePad + setW + 2 * one + cardW / 2; // ← index 2 (série du milieu)
+      const left = targetCenter - visualCenter();
+      rail.scrollLeft = left;
+    }, 50);
+    
+    return () => clearTimeout(timer);
   },[baseLen, cardW, gap, sidePad]); // ✅ Se recalcule au resize
 
   // Scroll + boucle + index actif — calculs basés sur le CENTRE VISUEL
@@ -328,9 +341,9 @@ export default function NexusPage() {
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-black text-red-700">
-      {/* ✅ CORRECTION MOBILE : Logo plus haut et plus grand */}
-      <div className="fixed z-[10000] left-1/2 -translate-x-1/2 top-2 md:top-8">
-        <div className="w-[55vw] max-w-[280px] md:w-[22vw] md:max-w-[360px] aspect-[5/1] overflow-hidden flex items-center justify-center">
+      {/* ✅ CORRECTION MOBILE : Logo plus petit et mieux positionné */}
+      <div ref={logoRef} className="fixed z-[10000] left-1/2 -translate-x-1/2 top-3 md:top-8">
+        <div className="w-[45vw] max-w-[240px] md:w-[22vw] md:max-w-[360px] aspect-[5/1] overflow-hidden flex items-center justify-center">
           <img
             src="/logo.png"
             alt="Logo NEXXXUS"
@@ -339,13 +352,13 @@ export default function NexusPage() {
         </div>
       </div>
 
-      {/* ✅ CORRECTION MOBILE : Menu plus compact avec texte plus petit */}
-      <div className="fixed top-[4.5rem] md:top-5 left-1/2 md:left-5 -translate-x-1/2 md:translate-x-0 z-[9999] flex items-center gap-1.5 md:gap-3">
+      {/* ✅ CORRECTION MOBILE : Menu ultra-compact */}
+      <div className="fixed top-[4rem] md:top-5 left-1/2 md:left-5 -translate-x-1/2 md:translate-x-0 z-[9999] flex items-center gap-1 md:gap-3">
         {slides.map((s, i)=>(
           <button
             key={s.id}
             onClick={()=>goTo(i)}
-            className={`text-[9px] md:text-sm uppercase tracking-wide px-1.5 md:px-2 py-1 rounded whitespace-nowrap
+            className={`text-[8px] md:text-sm uppercase tracking-wide px-1 md:px-2 py-0.5 md:py-1 rounded whitespace-nowrap leading-tight
               ${i===active ? "bg-red-700 text-black" : "text-red-700 hover:text-red-400"}`}
           >
             {s.label}
@@ -353,21 +366,21 @@ export default function NexusPage() {
         ))}
       </div>
 
-      {/* RAIL */}
+      {/* ✅ CORRECTION : RAIL avec centrage vertical parfait */}
       <div
         ref={railRef}
-        className="no-scrollbar overflow-x-auto overflow-y-hidden absolute inset-0"
+        className="no-scrollbar overflow-x-auto overflow-y-hidden absolute inset-0 flex items-center"
         style={{ scrollSnapType: "x mandatory", paddingLeft: sidePad, paddingRight: sidePad }}
       >
         <div
-          className="flex items-center h-full"
-          style={{ gap }}
+          className="flex items-center"
+          style={{ gap, minWidth: '100%' }}
         >
           {triple.map((item, i)=>(
             <CoverCard
               key={`${item.id}-${i}`}
               width={cardW}
-              height={Math.min(vh, (getViewportWidth() < 768 ? Math.round(vh*0.55) : 680))}
+              height={Math.min(vh, (getViewportWidth() < 768 ? Math.round(vh*0.50) : 680))}
               cardW={cardW}
               gap={gap}
               centerX={visualCenter()}
