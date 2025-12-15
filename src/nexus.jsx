@@ -1,11 +1,12 @@
+
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 
 /** Paramètres d'affichage (tunable simplement) */
-const CARD_RATIO = 0.44;     // desktop
+const CARD_RATIO = 0.44;     // ↓ un peu (vs 0.46) pour laisser + d'air aux voisines
 const CARD_MAX   = 980;      // largeur max (px)
 const GAP_MIN    = 12;       // espacement min entre cartes
 const GAP_MAX    = 24;       // espacement max
-const GAP_RATIO  = 0.020;
+const GAP_RATIO  = 0.020;    // ↑ un poil (vs 0.018) pour respirer
 
 // ✅ CORRECTION : Fonction cohérente pour obtenir la largeur viewport
 const getViewportWidth = () => {
@@ -22,12 +23,16 @@ export default function NexusPage() {
       label: "Artistes",
       node: (
         <div className="h-[60vh] w-[70vw] max-w-[900px] flex items-center justify-center">
+          {/* Cadre 9:16 */}
           <div className="h-full aspect-[9/16] max-h-[60vh] rounded-xl overflow-hidden border border-red-700/40 bg-black/60 text-red-700 p-5 md:p-7 flex">
+            {/* Contenu non scrollant : tout doit tenir */}
             <div className="m-auto w-full max-w-[92%]">
+              {/* Légende top */}
               <p className="text-[9px] md:text-[10px] tracking-[0.2em] text-red-700/60 uppercase mb-2 text-left">
                 artistes
               </p>
 
+              {/* 3 têtes d'affiche : 3 lignes, 1 nom par ligne (taille réduite pour tenir) */}
               <div className="mb-3 space-y-1.5 text-center">
                 {["PLAYBOI CARTI", "KEN CARSON", "NETTSPEND"].map((name) => (
                   <div
@@ -44,6 +49,7 @@ export default function NexusPage() {
                 ))}
               </div>
 
+              {/* Bloc artistes secondaires : 2 noms par ligne, ✦ au centre */}
               <div className="mb-2 space-y-1.5">
                 {[
                   ["LIL UZI VERT", "2HOLLIS"],
@@ -63,6 +69,7 @@ export default function NexusPage() {
                 ))}
               </div>
 
+              {/* Dernière ligne (plus petite) */}
               <div className="flex justify-center gap-x-8 gap-y-2 flex-wrap uppercase mb-2">
                 {["JEUNE MORTY","SCH","HAMZA"].map((name) => (
                   <span
@@ -74,6 +81,7 @@ export default function NexusPage() {
                 ))}
               </div>
 
+              {/* Trait + phrase */}
               <div className="h-px w-full bg-red-700/25 mb-2" />
               <div className="text-center text-[8px] md:text-[9px] tracking-[0.25em] text-red-700/60 uppercase">
                 LA LINE UP EST SUCCEPTIBLE D'ÉVOLUER
@@ -89,10 +97,13 @@ export default function NexusPage() {
       label: "XXX Party",
       node: (
         <div className="h-[60vh] w-[70vw] max-w-[900px] flex items-center justify-center">
+          {/* Cadre 9:16 identique aux autres */}
           <div className="h-full aspect-[9/16] max-h-[60vh] rounded-xl overflow-hidden border border-red-700/40 bg-black/60">
-            <div className="h-full w-full bg-gradient-to-br from-red-900/20 to-black flex items-center justify-center text-red-700 text-2xl font-bold">
-              XXX PARTY FLYER
-            </div>
+            <img
+              src="/flyer.png"
+              alt="Flyer XXX Party"
+              className="h-full w-full object-cover"
+            />
           </div>
         </div>
       ),
@@ -104,10 +115,18 @@ export default function NexusPage() {
       label: "Teaser",
       node: (
         <div className="h-[60vh] w-[70vw] max-w-[900px] flex items-center justify-center">
+          {/* Cadre 9:16 responsive */}
           <div className="h-full aspect-[9/16] max-h-[60vh] rounded-xl overflow-hidden border border-red-700/40 bg-black">
-            <div className="h-full w-full flex items-center justify-center text-red-700/60 text-sm">
-              [Vidéo Teaser]
-            </div>
+            <video
+              src="/teaser.mp4"            // <- place /public/teaser.mp4
+              poster="/teaser-poster.jpg"  // <- optionnel
+              autoPlay  // MOBILE
+              muted     // MOBILE
+              loop      // MOBILE
+              controls
+              playsInline // MOBILE
+              className="h-full w-full object-cover"
+            />
           </div>
         </div>
       ),
@@ -129,13 +148,18 @@ export default function NexusPage() {
               </h2>
 
               <button
-                onClick={()=>window.open("https://open.spotify.com/playlist/2DAwhXLNq8zXdsXUX7ZbNW","_blank")}
+                onClick={()=>window.open("https://open.spotify.com/playlist/2DAwhXLNq8zXdsXUX7ZbNW?si=TwjC4kzvToKkyB_eH4-DtA&pi=P0TZ72p5TRGtk","_blank")}
                 className="px-5 py-2.5 border border-red-700 text-red-700 hover:bg-red-700 hover:text-black transition rounded text-[clamp(12px,1.6vw,20px)]"
               >
                 Acceder a la playlist
               </button>
 
-              <div className="w-24 h-24 bg-red-900/30 rounded-md" />
+              <img
+                src="/playlist-cover.png"
+                alt="Ouvrir la playlist NEXUS"
+                onClick={()=>window.open("https://open.spotify.com/playlist/2DAwhXLNq8zXdsXUX7ZbNW?si=TwjC4kzvToKkyB_eH4-DtA&pi=P0TZ72p5TRGtk","_blank")}
+                className="cursor-pointer w-24 h-24 object-cover rounded-md shadow-md hover:opacity-80 transition"
+              />
             </div>
           </div>
         </div>
@@ -158,8 +182,18 @@ export default function NexusPage() {
               </h2>
 
               <div className="flex items-center gap-8">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-red-900/30 rounded-full" />
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-red-900/30 rounded-full" />
+                <img
+                  src="/instagram.png"
+                  alt="Instagram"
+                  onClick={()=>window.open("https://www.instagram.com/n3x.x.xus?igsh=MW1yZ2Y5aHF5cTZmaA%3D%3D&utm_source=qr","_blank")}
+                  className="cursor-pointer hover:opacity-80 transition shrink-0 object-contain w-16 h-16 md:w-20 md:h-20"
+                />
+                <img
+                  src="/tiktok.png"
+                  alt="TikTok"
+                  onClick={()=>window.open("https://www.tiktok.com/@n33x.us?_t=ZN-8zwXKBjcZWA&_r=1","_blank")}
+                  className="cursor-pointer hover:opacity-80 transition shrink-0 object-contain w-16 h-16 md:w-20 md:h-20"
+                />
               </div>
             </div>
           </div>
@@ -171,14 +205,11 @@ export default function NexusPage() {
   const baseLen = slides.length;
   const triple = useMemo(()=>[...slides, ...slides, ...slides], [slides]);
 
-  // ---- États layout ----
+  // ---- États layout (safe SSR) ----
   const [cardW, setCardW] = useState(700);
   const [gap, setGap] = useState(18);
   const [sidePad, setSidePad] = useState(100);
   const [vh, setVh] = useState(900);
-
-  const railRef = useRef(null);
-  const [active, setActive] = useState(0);
 
   // ✅ CORRECTION : Calcul cohérent avec getViewportWidth()
   useEffect(()=>{
@@ -189,7 +220,7 @@ export default function NexusPage() {
       const h = window.innerHeight;
       const isMobile = w < 768;
 
-      // Largeur carte : plus large sur mobile
+      // Largeur carte : un peu plus large sur mobile pour remplir sans dépasser
       const ratio = isMobile ? 0.85 : CARD_RATIO;
       const cw = Math.min(w * ratio, isMobile ? 420 : CARD_MAX);
 
@@ -209,10 +240,13 @@ export default function NexusPage() {
     return ()=> window.removeEventListener("resize", compute);
   },[]);
 
+  const railRef = useRef(null);
+  const [active, setActive] = useState(0);
+
   // ✅ CORRECTION : Centre visuel basé sur window.innerWidth / 2 (cohérent)
   const visualCenter = () => getViewportWidth() / 2;
 
-  // Masquer header/footer + reset global
+  // Masquer header/footer Shopify + reset global
   useEffect(()=>{
     const css = document.createElement("style");
     css.textContent = `
@@ -234,12 +268,12 @@ export default function NexusPage() {
     if(!rail) return;
     const one = (cardW + gap);
     const setW = baseLen * one;
-    const targetCenter = sidePad + setW + 2 * one + cardW / 2; // index 2
+    const targetCenter = sidePad + setW + 2 * one + cardW / 2; // ← index 2 (série du milieu)
     const left = targetCenter - visualCenter();
     rail.scrollLeft = left;
   },[baseLen, cardW, gap, sidePad]); // ✅ Se recalcule au resize
 
-  // Scroll + boucle + index actif
+  // Scroll + boucle + index actif — calculs basés sur le CENTRE VISUEL
   useEffect(()=>{
     const rail = railRef.current;
     if(!rail) return;
@@ -276,12 +310,14 @@ export default function NexusPage() {
     };
   },[baseLen, cardW, gap, sidePad]);
 
-  // ✅ Aller à un index
+  // ✅ Aller à un index — centrage sur le CENTRE VISUEL
   const goTo = (targetIdx)=>{
     const rail = railRef.current;
     if(!rail) return;
     const one = (cardW + gap);
     const setW = baseLen * one;
+
+    // centre de la carte ciblée dans la 2e série (milieu)
     const targetCenter = sidePad + setW + targetIdx * one + cardW / 2;
     const left = targetCenter - visualCenter();
     rail.scrollTo({ left, behavior: "smooth" });
@@ -289,17 +325,19 @@ export default function NexusPage() {
 
   return (
     <div className="relative min-h-screen w-screen overflow-hidden bg-black text-red-700">
-      {/* ✅ CORRECTION : Logo AU-DESSUS du menu (z-index plus élevé) */}
-      <div className="fixed z-[10000] left-1/2 -translate-x-1/2 top-3 md:top-8 pointer-events-none">
+      {/* ✅ CORRECTION : Logo AU-DESSUS du menu */}
+      <div className="fixed z-[10000] left-1/2 -translate-x-1/2 top-3 md:top-8">
         <div className="w-[48vw] max-w-[260px] md:w-[22vw] md:max-w-[360px] aspect-[5/1] overflow-hidden flex items-center justify-center">
-          <div className="w-full h-full bg-gradient-to-r from-red-700 to-red-500 opacity-80 flex items-center justify-center text-black font-bold text-xs md:text-base">
-            NEXXXUS
-          </div>
+          <img
+            src="/logo.png"
+            alt="Logo NEXXXUS"
+            className="max-h-full max-w-full object-contain pointer-events-none"
+          />
         </div>
       </div>
 
-      {/* ✅ CORRECTION : MENU avec z-index inférieur au logo */}
-      <div className="fixed top-16 md:top-20 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2 md:gap-3">
+      {/* ✅ CORRECTION : MENU repositionné plus bas sur mobile */}
+      <div className="fixed top-16 md:top-5 left-1/2 md:left-5 -translate-x-1/2 md:translate-x-0 z-[9999] flex items-center gap-2 md:gap-3">
         {slides.map((s, i)=>(
           <button
             key={s.id}
@@ -316,24 +354,17 @@ export default function NexusPage() {
       <div
         ref={railRef}
         className="no-scrollbar overflow-x-auto overflow-y-hidden h-screen w-full"
-        style={{ 
-          scrollSnapType: "x mandatory", 
-          paddingLeft: sidePad, 
-          paddingRight: sidePad 
-        }}
+        style={{ scrollSnapType: "x mandatory", paddingLeft: sidePad, paddingRight: sidePad }}
       >
         <div
           className="flex items-center h-screen"
-          style={{ 
-            gap, 
-            paddingTop: getViewportWidth() < 768 ? "22vh" : "8vh" // ✅ Plus d'espace sur mobile
-          }}
+          style={{ gap, paddingTop: (getViewportWidth() < 768 ? "22vh" : "8vh") }}
         >
           {triple.map((item, i)=>(
             <CoverCard
               key={`${item.id}-${i}`}
               width={cardW}
-              height={Math.min(vh, (getViewportWidth() < 768 ? Math.round(vh*0.60) : 680))} // ✅ Cartes moins hautes sur mobile
+              height={Math.min(vh, (getViewportWidth() < 768 ? Math.round(vh*0.60) : 680))}
               cardW={cardW}
               gap={gap}
               centerX={visualCenter()}
@@ -352,7 +383,11 @@ export default function NexusPage() {
             className="flex items-center justify-center"
           >
             {i === active ? (
-              <span className="w-5 h-5 bg-red-700 rounded-sm" />
+              <img
+                src="/x.png"
+                alt="Active"
+                className="w-5 h-5 object-contain"
+              />
             ) : (
               <span className="w-2.5 h-2.5 rounded-full bg-red-700/30" />
             )}
@@ -373,8 +408,10 @@ export default function NexusPage() {
   );
 }
 
+// util
 const mod = (n,m)=>((n%m)+m)%m;
 
+/** Carte coverflow : centre plus imposant, voisines plus tassées */
 function CoverCard({children, width, height, cardW, gap, centerX}) {
   const ref = useRef(null);
   const [t, setT] = useState({scale: 1, rotate: 0, opacity: 1, blur: 0, glow: 0, glowScale: 1});
@@ -389,10 +426,12 @@ function CoverCard({children, width, height, cardW, gap, centerX}) {
       const cardCenter = r.left + r.width / 2;
       const distPx = Math.abs(cardCenter - center);
 
+      // 0 = pile au centre ; 1 = voisine directe (une carte + gap)
       const oneCard = cardW + gap;
       const normRaw = Math.min(1, distPx / oneCard);
       const norm = Math.pow(normRaw, 0.8);
 
+      // Réglages 3D
       const MAX_SCALE = 1.06;
       const MIN_SCALE = 0.82;
       const scale   = MIN_SCALE + (MAX_SCALE - MIN_SCALE) * (1 - norm);
@@ -401,6 +440,7 @@ function CoverCard({children, width, height, cardW, gap, centerX}) {
       const opacity  = 1 - 0.15 * norm;
       const blur     = 1.0 * norm;
 
+      // Lueur : plus petite et sous la carte
       const glow     = Math.max(0, 1 - Math.pow(norm, 0.9));
       const glowScale= 1 + 0.18 * (1 - norm);
 
@@ -436,6 +476,7 @@ function CoverCard({children, width, height, cardW, gap, centerX}) {
         filter: `blur(${t.blur}px)`,
       }}
     >
+      {/* Halo rouge — sous la carte */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-[10px] z-[-1] rounded-[28px]"
