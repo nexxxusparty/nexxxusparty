@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 export default function NexusCarousel() {
@@ -184,7 +185,7 @@ export default function NexusCarousel() {
     <div className="fixed inset-0 bg-black text-red-700 overflow-hidden">
       {/* Logo - Centré en haut */}
       <div className="fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-50">
-        <div className="w-[50vw] max-w-[260px] md:w-[22vw] md:max-w-[360px]">
+        <div className="w-[50vw] max-w-[260px] md:w-[18vw] md:max-w-[300px]">
           <img
             src="/logo.png"
             alt="Logo NEXXXUS"
@@ -212,7 +213,7 @@ export default function NexusCarousel() {
 
       {/* Carrousel - Centré verticalement et horizontalement */}
       <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55vw] md:w-[20vw] max-w-[280px] md:max-w-[380px]"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55vw] md:w-[17vw] max-w-[280px] md:max-w-[320px]"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
