@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 export default function NexusCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(true);
 
   // ---- Slides (contenu) ----
   const slides = [
@@ -147,18 +148,36 @@ export default function NexusCarousel() {
     };
   }, []);
 
-  // Navigation
+  // Navigation avec gestion du scroll infini
   const goToSlide = (index) => {
+    setIsTransitioning(true);
     setActiveIndex(index);
   };
 
   const nextSlide = () => {
-    setActiveIndex((prev) => (prev + 1) % slides.length);
+    goToSlide(activeIndex + 1);
   };
 
   const prevSlide = () => {
-    setActiveIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    goToSlide(activeIndex - 1);
   };
+
+  // Gérer la téléportation aux vrais slides quand on atteint les clones
+  useEffect(() => {
+    if (activeIndex === -1) {
+      // On est sur le clone du dernier (avant le premier)
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setActiveIndex(slides.length - 1);
+      }, 500);
+    } else if (activeIndex === slides.length) {
+      // On est sur le clone du premier (après le dernier)
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setActiveIndex(0);
+      }, 500);
+    }
+  }, [activeIndex, slides.length]);
 
   // Gestion du swipe sur mobile
   const [touchStart, setTouchStart] = useState(0);
@@ -193,6 +212,9 @@ export default function NexusCarousel() {
     }
   };
 
+  // Calculer l'index réel pour l'affichage des indicateurs
+  const displayIndex = ((activeIndex % slides.length) + slides.length) % slides.length;
+
   return (
     <div className="fixed inset-0 bg-black text-red-700 overflow-hidden">
       {/* Logo - Centré en haut */}
@@ -213,7 +235,7 @@ export default function NexusCarousel() {
             key={slide.id}
             onClick={() => goToSlide(index)}
             className={`px-2 md:px-3 py-1 text-[11px] md:text-sm uppercase tracking-wide rounded transition whitespace-nowrap ${
-              index === activeIndex
+              index === displayIndex
                 ? 'bg-red-700 text-black'
                 : 'text-red-700 hover:text-red-400'
             }`}
@@ -232,16 +254,31 @@ export default function NexusCarousel() {
         onWheel={handleWheel}
       >
         <div className="relative aspect-[9/16] w-full">
-          {slides.map((slide, index) => {
-            const offset = index - activeIndex;
-            const isActive = index === activeIndex;
-            // Plus d'espacement sur desktop
-            const spacing = isMobile ? 100 : 150;
+          {/* Afficher les slides avec clones pour effet infini */}
+          {[-1, ...Array.from({ length: slides.length }, (_, i) => i), slides.length].map((slideIndex) => {
+            // slideIndex peut être -1 (clone du dernier), 0-4 (vrais slides), ou 5 (clone du premier)
+            let actualSlide;
+            let key;
+            
+            if (slideIndex === -1) {
+              actualSlide = slides[slides.length - 1];
+              key = `clone-last-${slides.length - 1}`;
+            } else if (slideIndex === slides.length) {
+              actualSlide = slides[0];
+              key = `clone-first-0`;
+            } else {
+              actualSlide = slides[slideIndex];
+              key = `slide-${slideIndex}`;
+            }
+
+            const offset = slideIndex - activeIndex;
+            const isActive = slideIndex === activeIndex;
+            const spacing = isMobile ? 100 : 160;
             
             return (
               <div
-                key={slide.id}
-                className="absolute inset-0 transition-all duration-500 ease-out"
+                key={key}
+                className={`absolute inset-0 ease-out ${isTransitioning ? 'transition-all duration-500' : ''}`}
                 style={{
                   transform: `
                     translateX(${offset * spacing}%) 
@@ -253,7 +290,7 @@ export default function NexusCarousel() {
                   pointerEvents: isActive ? 'auto' : 'none',
                 }}
               >
-                {slide.content}
+                {actualSlide.content}
               </div>
             );
           })}
@@ -289,7 +326,7 @@ export default function NexusCarousel() {
             className="transition-all"
             aria-label={`Aller au slide ${index + 1}`}
           >
-            {index === activeIndex ? (
+            {index === displayIndex ? (
               <img src="/x.png" alt="Active" className="w-5 h-5 object-contain" />
             ) : (
               <span className="block w-2.5 h-2.5 rounded-full bg-red-700/30" />
