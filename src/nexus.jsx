@@ -235,7 +235,7 @@ export default function NexusCarousel() {
             const offset = index - activeIndex;
             const isActive = index === activeIndex;
             // Plus d'espacement sur desktop
-            const spacing = isMobile ? 100 : 150;
+            const spacing = isMobile ? 100 : 170;
             
             return (
               <div
