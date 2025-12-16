@@ -181,6 +181,18 @@ export default function NexusCarousel() {
     }
   };
 
+  // Gestion de la molette sur desktop
+  const handleWheel = (e) => {
+    if (!isMobile) {
+      e.preventDefault();
+      if (e.deltaY > 0) {
+        nextSlide();
+      } else if (e.deltaY < 0) {
+        prevSlide();
+      }
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black text-red-700 overflow-hidden">
       {/* Logo - Centré en haut */}
@@ -217,11 +229,14 @@ export default function NexusCarousel() {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onWheel={handleWheel}
       >
         <div className="relative aspect-[9/16] w-full">
           {slides.map((slide, index) => {
             const offset = index - activeIndex;
             const isActive = index === activeIndex;
+            // Plus d'espacement sur desktop
+            const spacing = isMobile ? 100 : 150;
             
             return (
               <div
@@ -229,7 +244,7 @@ export default function NexusCarousel() {
                 className="absolute inset-0 transition-all duration-500 ease-out"
                 style={{
                   transform: `
-                    translateX(${offset * 100}%) 
+                    translateX(${offset * spacing}%) 
                     scale(${isActive ? 1 : 0.85})
                     rotateY(${offset * 15}deg)
                   `,
