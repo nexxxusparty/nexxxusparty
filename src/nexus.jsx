@@ -12,7 +12,7 @@ export default function NexusCarousel() {
       id: "artistes",
       label: "Artistes",
       content: (
-        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden bg-black">
+        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
           {/* Image de fond */}
           <div 
             className="absolute inset-0 w-full h-full z-0"
@@ -65,7 +65,7 @@ export default function NexusCarousel() {
       id: "xxx-party",
       label: "XXX Party",
       content: (
-        <div className="w-full h-full border border-red-700/40 rounded-xl overflow-hidden relative bg-black">
+        <div className="w-full h-full border border-red-700/40 rounded-xl overflow-hidden relative">
           {/* Image de fond */}
           <div 
             className="absolute inset-0 w-full h-full z-0"
@@ -86,7 +86,7 @@ export default function NexusCarousel() {
       id: "teaser",
       label: "Teaser",
       content: (
-        <div className="w-full h-full border border-red-700/40 rounded-xl overflow-hidden relative bg-black">
+        <div className="w-full h-full border border-red-700/40 rounded-xl overflow-hidden relative">
           {/* Image de fond */}
           <div 
             className="absolute inset-0 w-full h-full z-0"
@@ -116,7 +116,7 @@ export default function NexusCarousel() {
       id: "playlist",
       label: "Playlist",
       content: (
-        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden bg-black">
+        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
           {/* Image de fond */}
           <div 
             className="absolute inset-0 w-full h-full z-0"
@@ -153,7 +153,7 @@ export default function NexusCarousel() {
       id: "reseaux",
       label: "Reseaux",
       content: (
-        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden bg-black">
+        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
           {/* Image de fond */}
           <div 
             className="absolute inset-0 w-full h-full z-0"
