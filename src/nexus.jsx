@@ -11,8 +11,15 @@ export default function NexusCarousel() {
       id: "artistes",
       label: "Artistes",
       content: (
-        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl flex items-center justify-center p-8">
-          <div className="text-center">
+        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
+          {/* Image de fond */}
+          <img 
+            src="/background-slide.png" 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
+          />
+          {/* Contenu au-dessus */}
+          <div className="text-center relative z-10">
             <p className="text-[10px] tracking-[0.2em] text-red-700/60 uppercase mb-4">artistes</p>
             <div className="space-y-2 mb-4">
               {["PLAYBOI CARTI", "KEN CARSON", "NETTSPEND"].map((name) => (
@@ -52,8 +59,15 @@ export default function NexusCarousel() {
       id: "xxx-party",
       label: "XXX Party",
       content: (
-        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl overflow-hidden">
-          <img src="/flyer.png" alt="Flyer XXX Party" className="w-full h-full object-cover" />
+        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl overflow-hidden relative">
+          {/* Image de fond */}
+          <img 
+            src="/background-slide.png" 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
+          />
+          {/* Contenu au-dessus */}
+          <img src="/flyer.png" alt="Flyer XXX Party" className="w-full h-full object-cover relative z-10" />
         </div>
       ),
     },
@@ -61,7 +75,14 @@ export default function NexusCarousel() {
       id: "teaser",
       label: "Teaser",
       content: (
-        <div className="w-full h-full border border-red-700/40 bg-black rounded-xl overflow-hidden">
+        <div className="w-full h-full border border-red-700/40 bg-black rounded-xl overflow-hidden relative">
+          {/* Image de fond */}
+          <img 
+            src="/background-slide.png" 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
+          />
+          {/* Contenu au-dessus */}
           <video
             src="/teaser.mp4"
             poster="/teaser-poster.jpg"
@@ -70,7 +91,7 @@ export default function NexusCarousel() {
             loop
             controls
             playsInline
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover relative z-10"
           />
         </div>
       ),
@@ -79,8 +100,15 @@ export default function NexusCarousel() {
       id: "playlist",
       label: "Playlist",
       content: (
-        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl flex items-center justify-center p-8">
-          <div className="text-center space-y-6">
+        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
+          {/* Image de fond */}
+          <img 
+            src="/background-slide.png" 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
+          />
+          {/* Contenu au-dessus */}
+          <div className="text-center space-y-6 relative z-10">
             <h2 className="text-red-700 text-3xl md:text-4xl uppercase tracking-wide">
               PLAYLIST OFFICIELLE
             </h2>
@@ -104,8 +132,15 @@ export default function NexusCarousel() {
       id: "reseaux",
       label: "Reseaux",
       content: (
-        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl flex items-center justify-center p-8">
-          <div className="text-center space-y-6">
+        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
+          {/* Image de fond */}
+          <img 
+            src="/background-slide.png" 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
+          />
+          {/* Contenu au-dessus */}
+          <div className="text-center space-y-6 relative z-10">
             <h2 className="text-red-700 text-3xl md:text-4xl uppercase tracking-wide">
               INOUBIABLE
             </h2>
@@ -228,7 +263,7 @@ export default function NexusCarousel() {
       </div>
 
       {/* Menu de navigation - Desktop en haut à gauche, Mobile centré sous le logo */}
-      <nav className="fixed top-20 md:top-5 left-1/2 md:left-5 -translate-x-1/2 md:translate-x-0 z-40 flex gap-2 md:gap-3">
+      <nav className="fixed top-28 md:top-5 left-1/2 md:left-5 -translate-x-1/2 md:translate-x-0 z-40 flex gap-2 md:gap-3">
         {slides.map((slide, index) => (
           <button
             key={slide.id}
@@ -246,7 +281,7 @@ export default function NexusCarousel() {
 
       {/* Carrousel - Centré verticalement et horizontalement */}
       <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55vw] md:w-[17vw] max-w-[280px] md:max-w-[320px]"
+        className="absolute top-[55%] md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55vw] md:w-[17vw] max-w-[280px] md:max-w-[320px]"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
