@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 export default function NexusCarousel() {
@@ -17,8 +16,10 @@ export default function NexusCarousel() {
           <img 
             src="/background-slide.png" 
             alt="" 
-            className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
+            className="absolute inset-0 w-full h-full object-cover z-0"
           />
+          {/* Overlay noir semi-transparent */}
+          <div className="absolute inset-0 bg-black/70 z-5"></div>
           {/* Contenu au-dessus */}
           <div className="text-center relative z-10">
             <p className="text-[10px] tracking-[0.2em] text-red-700/60 uppercase mb-4">artistes</p>
@@ -65,8 +66,10 @@ export default function NexusCarousel() {
           <img 
             src="/background-slide.png" 
             alt="" 
-            className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
+            className="absolute inset-0 w-full h-full object-cover z-0"
           />
+          {/* Overlay noir semi-transparent */}
+          <div className="absolute inset-0 bg-black/70 z-5"></div>
           {/* Contenu au-dessus */}
           <img src="/flyer.png" alt="Flyer XXX Party" className="w-full h-full object-cover relative z-10" />
         </div>
@@ -81,8 +84,10 @@ export default function NexusCarousel() {
           <img 
             src="/background-slide.png" 
             alt="" 
-            className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
+            className="absolute inset-0 w-full h-full object-cover z-0"
           />
+          {/* Overlay noir semi-transparent */}
+          <div className="absolute inset-0 bg-black/70 z-5"></div>
           {/* Contenu au-dessus */}
           <video
             src="/teaser.mp4"
@@ -106,8 +111,10 @@ export default function NexusCarousel() {
           <img 
             src="/background-slide.png" 
             alt="" 
-            className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
+            className="absolute inset-0 w-full h-full object-cover z-0"
           />
+          {/* Overlay noir semi-transparent */}
+          <div className="absolute inset-0 bg-black/70 z-5"></div>
           {/* Contenu au-dessus */}
           <div className="text-center space-y-6 relative z-10">
             <h2 className="text-red-700 text-3xl md:text-4xl uppercase tracking-wide">
@@ -138,8 +145,10 @@ export default function NexusCarousel() {
           <img 
             src="/background-slide.png" 
             alt="" 
-            className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
+            className="absolute inset-0 w-full h-full object-cover z-0"
           />
+          {/* Overlay noir semi-transparent */}
+          <div className="absolute inset-0 bg-black/70 z-5"></div>
           {/* Contenu au-dessus */}
           <div className="text-center space-y-6 relative z-10">
             <h2 className="text-red-700 text-3xl md:text-4xl uppercase tracking-wide">
