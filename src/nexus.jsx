@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 export default function NexusCarousel() {
@@ -11,17 +12,20 @@ export default function NexusCarousel() {
       id: "artistes",
       label: "Artistes",
       content: (
-        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
+        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden bg-black">
           {/* Image de fond */}
-          <img 
-            src="/background-slide.png" 
-            alt="" 
-            className="absolute inset-0 w-full h-full object-cover z-0"
+          <div 
+            className="absolute inset-0 w-full h-full z-0"
+            style={{
+              backgroundImage: 'url(/background-slide.png)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
           />
           {/* Overlay noir semi-transparent */}
-          <div className="absolute inset-0 bg-black/70 z-5"></div>
+          <div className="absolute inset-0 bg-black/70 z-10"></div>
           {/* Contenu au-dessus */}
-          <div className="text-center relative z-10">
+          <div className="text-center relative z-20">
             <p className="text-[10px] tracking-[0.2em] text-red-700/60 uppercase mb-4">artistes</p>
             <div className="space-y-2 mb-4">
               {["PLAYBOI CARTI", "KEN CARSON", "NETTSPEND"].map((name) => (
@@ -61,17 +65,20 @@ export default function NexusCarousel() {
       id: "xxx-party",
       label: "XXX Party",
       content: (
-        <div className="w-full h-full border border-red-700/40 rounded-xl overflow-hidden relative">
+        <div className="w-full h-full border border-red-700/40 rounded-xl overflow-hidden relative bg-black">
           {/* Image de fond */}
-          <img 
-            src="/background-slide.png" 
-            alt="" 
-            className="absolute inset-0 w-full h-full object-cover z-0"
+          <div 
+            className="absolute inset-0 w-full h-full z-0"
+            style={{
+              backgroundImage: 'url(/background-slide.png)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
           />
           {/* Overlay noir semi-transparent */}
-          <div className="absolute inset-0 bg-black/70 z-5"></div>
+          <div className="absolute inset-0 bg-black/70 z-10"></div>
           {/* Contenu au-dessus */}
-          <img src="/flyer.png" alt="Flyer XXX Party" className="w-full h-full object-cover relative z-10" />
+          <img src="/flyer.png" alt="Flyer XXX Party" className="w-full h-full object-cover relative z-20" />
         </div>
       ),
     },
@@ -79,15 +86,18 @@ export default function NexusCarousel() {
       id: "teaser",
       label: "Teaser",
       content: (
-        <div className="w-full h-full border border-red-700/40 rounded-xl overflow-hidden relative">
+        <div className="w-full h-full border border-red-700/40 rounded-xl overflow-hidden relative bg-black">
           {/* Image de fond */}
-          <img 
-            src="/background-slide.png" 
-            alt="" 
-            className="absolute inset-0 w-full h-full object-cover z-0"
+          <div 
+            className="absolute inset-0 w-full h-full z-0"
+            style={{
+              backgroundImage: 'url(/background-slide.png)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
           />
           {/* Overlay noir semi-transparent */}
-          <div className="absolute inset-0 bg-black/70 z-5"></div>
+          <div className="absolute inset-0 bg-black/70 z-10"></div>
           {/* Contenu au-dessus */}
           <video
             src="/teaser.mp4"
@@ -97,7 +107,7 @@ export default function NexusCarousel() {
             loop
             controls
             playsInline
-            className="w-full h-full object-cover relative z-10"
+            className="w-full h-full object-cover relative z-20"
           />
         </div>
       ),
@@ -106,17 +116,20 @@ export default function NexusCarousel() {
       id: "playlist",
       label: "Playlist",
       content: (
-        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
+        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden bg-black">
           {/* Image de fond */}
-          <img 
-            src="/background-slide.png" 
-            alt="" 
-            className="absolute inset-0 w-full h-full object-cover z-0"
+          <div 
+            className="absolute inset-0 w-full h-full z-0"
+            style={{
+              backgroundImage: 'url(/background-slide.png)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
           />
           {/* Overlay noir semi-transparent */}
-          <div className="absolute inset-0 bg-black/70 z-5"></div>
+          <div className="absolute inset-0 bg-black/70 z-10"></div>
           {/* Contenu au-dessus */}
-          <div className="text-center space-y-6 relative z-10">
+          <div className="text-center space-y-6 relative z-20">
             <h2 className="text-red-700 text-3xl md:text-4xl uppercase tracking-wide">
               PLAYLIST OFFICIELLE
             </h2>
@@ -140,17 +153,20 @@ export default function NexusCarousel() {
       id: "reseaux",
       label: "Reseaux",
       content: (
-        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
+        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden bg-black">
           {/* Image de fond */}
-          <img 
-            src="/background-slide.png" 
-            alt="" 
-            className="absolute inset-0 w-full h-full object-cover z-0"
+          <div 
+            className="absolute inset-0 w-full h-full z-0"
+            style={{
+              backgroundImage: 'url(/background-slide.png)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
           />
           {/* Overlay noir semi-transparent */}
-          <div className="absolute inset-0 bg-black/70 z-5"></div>
+          <div className="absolute inset-0 bg-black/70 z-10"></div>
           {/* Contenu au-dessus */}
-          <div className="text-center space-y-6 relative z-10">
+          <div className="text-center space-y-6 relative z-20">
             <h2 className="text-red-700 text-3xl md:text-4xl uppercase tracking-wide">
               INOUBIABLE
             </h2>
