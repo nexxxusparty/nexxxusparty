@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 export default function NexusCarousel() {
@@ -11,12 +12,12 @@ export default function NexusCarousel() {
       id: "artistes",
       label: "Artistes",
       content: (
-        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
+        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
           {/* Image de fond */}
           <img 
             src="/background-slide.png" 
             alt="" 
-            className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
+            className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
           />
           {/* Contenu au-dessus */}
           <div className="text-center relative z-10">
@@ -59,12 +60,12 @@ export default function NexusCarousel() {
       id: "xxx-party",
       label: "XXX Party",
       content: (
-        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl overflow-hidden relative">
+        <div className="w-full h-full border border-red-700/40 rounded-xl overflow-hidden relative">
           {/* Image de fond */}
           <img 
             src="/background-slide.png" 
             alt="" 
-            className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
+            className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
           />
           {/* Contenu au-dessus */}
           <img src="/flyer.png" alt="Flyer XXX Party" className="w-full h-full object-cover relative z-10" />
@@ -75,12 +76,12 @@ export default function NexusCarousel() {
       id: "teaser",
       label: "Teaser",
       content: (
-        <div className="w-full h-full border border-red-700/40 bg-black rounded-xl overflow-hidden relative">
+        <div className="w-full h-full border border-red-700/40 rounded-xl overflow-hidden relative">
           {/* Image de fond */}
           <img 
             src="/background-slide.png" 
             alt="" 
-            className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
+            className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
           />
           {/* Contenu au-dessus */}
           <video
@@ -100,12 +101,12 @@ export default function NexusCarousel() {
       id: "playlist",
       label: "Playlist",
       content: (
-        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
+        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
           {/* Image de fond */}
           <img 
             src="/background-slide.png" 
             alt="" 
-            className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
+            className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
           />
           {/* Contenu au-dessus */}
           <div className="text-center space-y-6 relative z-10">
@@ -132,12 +133,12 @@ export default function NexusCarousel() {
       id: "reseaux",
       label: "Reseaux",
       content: (
-        <div className="w-full h-full border border-red-700/40 bg-black/60 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
+        <div className="w-full h-full border border-red-700/40 rounded-xl flex items-center justify-center p-8 relative overflow-hidden">
           {/* Image de fond */}
           <img 
             src="/background-slide.png" 
             alt="" 
-            className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
+            className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
           />
           {/* Contenu au-dessus */}
           <div className="text-center space-y-6 relative z-10">
