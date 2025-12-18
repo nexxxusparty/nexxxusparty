@@ -23,7 +23,7 @@ export default function NexusCarousel() {
             }}
           />
           {/* Overlay noir semi-transparent */}
-          <div className="absolute inset-0 bg-black/70 z-10"></div>
+          <div className="absolute inset-0 bg-black/40 z-10"></div>
           {/* Contenu au-dessus */}
           <div className="text-center relative z-20">
             <p className="text-[10px] tracking-[0.2em] text-red-700/60 uppercase mb-4">artistes</p>
@@ -76,7 +76,7 @@ export default function NexusCarousel() {
             }}
           />
           {/* Overlay noir semi-transparent */}
-          <div className="absolute inset-0 bg-black/70 z-10"></div>
+          <div className="absolute inset-0 bg-black/40 z-10"></div>
           {/* Contenu au-dessus */}
           <img src="/flyer.png" alt="Flyer XXX Party" className="w-full h-full object-cover relative z-20" />
         </div>
@@ -97,7 +97,7 @@ export default function NexusCarousel() {
             }}
           />
           {/* Overlay noir semi-transparent */}
-          <div className="absolute inset-0 bg-black/70 z-10"></div>
+          <div className="absolute inset-0 bg-black/40 z-10"></div>
           {/* Contenu au-dessus */}
           <video
             src="/teaser.mp4"
@@ -127,7 +127,7 @@ export default function NexusCarousel() {
             }}
           />
           {/* Overlay noir semi-transparent */}
-          <div className="absolute inset-0 bg-black/70 z-10"></div>
+          <div className="absolute inset-0 bg-black/40 z-10"></div>
           {/* Contenu au-dessus */}
           <div className="text-center space-y-6 relative z-20">
             <h2 className="text-red-700 text-3xl md:text-4xl uppercase tracking-wide">
@@ -164,7 +164,7 @@ export default function NexusCarousel() {
             }}
           />
           {/* Overlay noir semi-transparent */}
-          <div className="absolute inset-0 bg-black/70 z-10"></div>
+          <div className="absolute inset-0 bg-black/40 z-10"></div>
           {/* Contenu au-dessus */}
           <div className="text-center space-y-6 relative z-20">
             <h2 className="text-red-700 text-3xl md:text-4xl uppercase tracking-wide">
@@ -312,8 +312,9 @@ export default function NexusCarousel() {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onWheel={handleWheel}
+        style={{ perspective: '1500px' }}
       >
-        <div className="relative aspect-[9/16] w-full">
+        <div className="relative aspect-[9/16] w-full" style={{ transformStyle: 'preserve-3d' }}>
           {/* Afficher les slides avec clones pour effet infini */}
           {[-1, ...Array.from({ length: slides.length }, (_, i) => i), slides.length].map((slideIndex) => {
             // slideIndex peut être -1 (clone du dernier), 0-4 (vrais slides), ou 5 (clone du premier)
@@ -335,6 +336,14 @@ export default function NexusCarousel() {
             const isActive = slideIndex === activeIndex;
             const spacing = isMobile ? 100 : 160;
             
+            // Effet 3D circulaire amélioré
+            const absOffset = Math.abs(offset);
+            const rotateY = offset * 45; // Rotation plus prononcée
+            const rotateZ = offset * -5; // Légère inclinaison
+            const translateZ = isActive ? 0 : -150 - (absOffset * 100); // Profondeur
+            const scale = isActive ? 1 : Math.max(0.6, 1 - absOffset * 0.2); // Réduction progressive
+            const opacity = Math.abs(offset) > 2 ? 0 : isActive ? 1 : Math.max(0.3, 1 - absOffset * 0.3);
+            
             return (
               <div
                 key={key}
@@ -342,12 +351,15 @@ export default function NexusCarousel() {
                 style={{
                   transform: `
                     translateX(${offset * spacing}%) 
-                    scale(${isActive ? 1 : 0.85})
-                    rotateY(${offset * 15}deg)
+                    translateZ(${translateZ}px)
+                    scale(${scale})
+                    rotateY(${rotateY}deg)
+                    rotateZ(${rotateZ}deg)
                   `,
-                  opacity: Math.abs(offset) > 1 ? 0 : isActive ? 1 : 0.4,
-                  zIndex: isActive ? 10 : Math.abs(offset) > 1 ? 0 : 5,
+                  opacity: opacity,
+                  zIndex: isActive ? 10 : Math.abs(offset) > 2 ? 0 : 5,
                   pointerEvents: isActive ? 'auto' : 'none',
+                  transformStyle: 'preserve-3d',
                 }}
               >
                 {actualSlide.content}
