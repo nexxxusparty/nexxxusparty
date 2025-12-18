@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 export default function NexusCarousel() {
@@ -259,15 +260,20 @@ export default function NexusCarousel() {
     }
   };
 
-  // Gestion de la molette sur desktop
+  // Gestion de la molette sur desktop avec throttle
+  const [canScroll, setCanScroll] = useState(true);
+  
   const handleWheel = (e) => {
-    if (!isMobile) {
+    if (!isMobile && canScroll) {
       e.preventDefault();
       if (e.deltaY > 0) {
         nextSlide();
       } else if (e.deltaY < 0) {
         prevSlide();
       }
+      // Bloquer le scroll pendant 400ms pour ralentir
+      setCanScroll(false);
+      setTimeout(() => setCanScroll(true), 400);
     }
   };
 
@@ -347,9 +353,16 @@ export default function NexusCarousel() {
             const circleX = Math.sin(angle) * radius;
             const circleZ = Math.cos(angle) * radius - radius; // -radius pour centrer
             
-            // Rotation : slides aux extrémités (±2) sont face verso
+            // Rotation : slides aux extrémités (±2) sont face verso, adjacentes légèrement tournées
             const isBackSide = absOffset >= 2;
-            const rotateY = isBackSide ? (offset * 72 + 180) : (offset * 72);
+            let rotateY;
+            if (isBackSide) {
+              rotateY = offset * 72 + 180; // Face verso pour les extrémités
+            } else if (absOffset === 1) {
+              rotateY = offset * 35; // Adjacentes moins tournées (35° au lieu de 72°)
+            } else {
+              rotateY = 0; // Slide centrale face à nous
+            }
             
             // Scale : slides adjacentes encore plus grandes
             const scale = isActive ? 1 : Math.max(0.75, 1 - absOffset * 0.10);
@@ -358,8 +371,10 @@ export default function NexusCarousel() {
             let opacity;
             if (isBackSide) {
               opacity = 0.35; // Face verso semi-transparente
+            } else if (absOffset === 1) {
+              opacity = 0.85; // Adjacentes très visibles
             } else {
-              opacity = isActive ? 1 : Math.max(0.65, 1 - absOffset * 0.20);
+              opacity = isActive ? 1 : 0.65;
             }
             
             return (
