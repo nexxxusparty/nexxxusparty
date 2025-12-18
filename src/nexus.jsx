@@ -336,11 +336,15 @@ export default function NexusCarousel() {
             const isActive = slideIndex === activeIndex;
             const spacing = isMobile ? 100 : 160;
             
-            // Effet 3D circulaire amélioré
+            // Effet 3D circulaire amélioré - arc de cercle
             const absOffset = Math.abs(offset);
             const rotateY = offset * 45; // Rotation plus prononcée
             const rotateZ = offset * -5; // Légère inclinaison
             const translateZ = isActive ? 0 : -150 - (absOffset * 100); // Profondeur
+            
+            // ✅ Mouvement vertical pour former un arc (parabole)
+            const translateY = Math.pow(absOffset, 1.5) * 20; // Les slides s'éloignent vers le haut/bas
+            
             const scale = isActive ? 1 : Math.max(0.6, 1 - absOffset * 0.2); // Réduction progressive
             const opacity = Math.abs(offset) > 2 ? 0 : isActive ? 1 : Math.max(0.3, 1 - absOffset * 0.3);
             
@@ -350,7 +354,8 @@ export default function NexusCarousel() {
                 className={`absolute inset-0 ease-out ${isTransitioning ? 'transition-all duration-500' : ''}`}
                 style={{
                   transform: `
-                    translateX(${offset * spacing}%) 
+                    translateX(${offset * spacing}%)
+                    translateY(${translateY}%)
                     translateZ(${translateZ}px)
                     scale(${scale})
                     rotateY(${rotateY}deg)
