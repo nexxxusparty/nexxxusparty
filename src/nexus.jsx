@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 export default function NexusCarousel() {
@@ -317,7 +316,7 @@ export default function NexusCarousel() {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onWheel={handleWheel}
-        style={{ perspective: '2000px' }}
+        style={{ perspective: isMobile ? '1200px' : '2000px' }}
       >
         <div className="relative aspect-[9/16] w-full" style={{ transformStyle: 'preserve-3d' }}>
           {/* Afficher les slides avec clones pour effet infini */}
@@ -343,8 +342,8 @@ export default function NexusCarousel() {
             // ✅ Effet 3D circulaire en profondeur (comme un manège)
             const absOffset = Math.abs(offset);
             
-            // Rayon du cercle 3D
-            const radius = isMobile ? 260 : 450; // Rayon encore réduit pour mieux voir les adjacentes
+            // Rayon du cercle 3D (plus petit sur mobile)
+            const radius = isMobile ? 220 : 450;
             
             // Angle de chaque slide sur le cercle (en degrés convertis en radians)
             const angle = (offset * 72) * (Math.PI / 180); // 72° = 360/5 slides
@@ -359,20 +358,20 @@ export default function NexusCarousel() {
             if (isBackSide) {
               rotateY = offset * 72 + 180; // Face verso pour les extrémités
             } else if (absOffset === 1) {
-              rotateY = offset * 35; // Adjacentes moins tournées (35° au lieu de 72°)
+              rotateY = isMobile ? offset * 40 : offset * 35; // Adjacentes un peu plus tournées sur mobile
             } else {
               rotateY = 0; // Slide centrale face à nous
             }
             
-            // Scale : slides adjacentes encore plus grandes
-            const scale = isActive ? 1 : Math.max(0.75, 1 - absOffset * 0.10);
+            // Scale : adapté pour mobile
+            const scale = isActive ? 1 : (isMobile ? Math.max(0.7, 1 - absOffset * 0.12) : Math.max(0.75, 1 - absOffset * 0.10));
             
-            // Opacity : adjacentes très visibles, extrémités transparentes (effet fantôme)
+            // Opacity : adjacentes visibles, extrémités transparentes
             let opacity;
             if (isBackSide) {
-              opacity = 0.35; // Face verso semi-transparente
+              opacity = isMobile ? 0.25 : 0.35; // Moins visible sur mobile
             } else if (absOffset === 1) {
-              opacity = 0.85; // Adjacentes très visibles
+              opacity = isMobile ? 0.75 : 0.85; // Adjacentes bien visibles
             } else {
               opacity = isActive ? 1 : 0.65;
             }
