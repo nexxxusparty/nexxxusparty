@@ -312,7 +312,7 @@ export default function NexusCarousel() {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onWheel={handleWheel}
-        style={{ perspective: '1500px' }}
+        style={{ perspective: '2000px' }}
       >
         <div className="relative aspect-[9/16] w-full" style={{ transformStyle: 'preserve-3d' }}>
           {/* Afficher les slides avec clones pour effet infini */}
@@ -334,19 +334,28 @@ export default function NexusCarousel() {
 
             const offset = slideIndex - activeIndex;
             const isActive = slideIndex === activeIndex;
-            const spacing = isMobile ? 100 : 160;
             
-            // Effet 3D circulaire amélioré - arc de cercle
+            // ✅ Effet 3D circulaire en profondeur (comme un manège)
             const absOffset = Math.abs(offset);
-            const rotateY = offset * 45; // Rotation plus prononcée
-            const rotateZ = offset * -5; // Légère inclinaison
-            const translateZ = isActive ? 0 : -150 - (absOffset * 100); // Profondeur
             
-            // ✅ Mouvement vertical pour former un arc (parabole)
-            const translateY = Math.pow(absOffset, 1.5) * 20; // Les slides s'éloignent vers le haut/bas
+            // Rayon du cercle 3D
+            const radius = isMobile ? 300 : 600;
             
-            const scale = isActive ? 1 : Math.max(0.6, 1 - absOffset * 0.2); // Réduction progressive
-            const opacity = Math.abs(offset) > 2 ? 0 : isActive ? 1 : Math.max(0.3, 1 - absOffset * 0.3);
+            // Angle de chaque slide sur le cercle (en degrés convertis en radians)
+            const angle = (offset * 72) * (Math.PI / 180); // 72° = 360/5 slides
+            
+            // Position X et Z sur le cercle
+            const circleX = Math.sin(angle) * radius;
+            const circleZ = Math.cos(angle) * radius - radius; // -radius pour centrer
+            
+            // Rotation pour que la slide face vers le centre
+            const rotateY = -offset * 72; // Rotation inverse à l'angle
+            
+            // Scale : plus petit quand éloigné
+            const scale = isActive ? 1 : Math.max(0.5, 1 - absOffset * 0.15);
+            
+            // Opacity : visible jusqu'à 2 positions
+            const opacity = Math.abs(offset) > 2 ? 0 : isActive ? 1 : Math.max(0.2, 1 - absOffset * 0.35);
             
             return (
               <div
@@ -354,15 +363,12 @@ export default function NexusCarousel() {
                 className={`absolute inset-0 ease-out ${isTransitioning ? 'transition-all duration-500' : ''}`}
                 style={{
                   transform: `
-                    translateX(${offset * spacing}%)
-                    translateY(${translateY}%)
-                    translateZ(${translateZ}px)
+                    translate3d(${circleX}px, 0, ${circleZ}px)
                     scale(${scale})
                     rotateY(${rotateY}deg)
-                    rotateZ(${rotateZ}deg)
                   `,
                   opacity: opacity,
-                  zIndex: isActive ? 10 : Math.abs(offset) > 2 ? 0 : 5,
+                  zIndex: isActive ? 10 : Math.abs(offset) > 2 ? 0 : 5 - absOffset,
                   pointerEvents: isActive ? 'auto' : 'none',
                   transformStyle: 'preserve-3d',
                 }}
