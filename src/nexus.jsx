@@ -338,7 +338,7 @@ export default function NexusCarousel() {
             const absOffset = Math.abs(offset);
             
             // Rayon du cercle 3D
-            const radius = isMobile ? 300 : 600;
+            const radius = isMobile ? 280 : 500; // Rayon réduit pour que les slides adjacentes soient plus visibles
             
             // Angle de chaque slide sur le cercle (en degrés convertis en radians)
             const angle = (offset * 72) * (Math.PI / 180); // 72° = 360/5 slides
@@ -347,14 +347,14 @@ export default function NexusCarousel() {
             const circleX = Math.sin(angle) * radius;
             const circleZ = Math.cos(angle) * radius - radius; // -radius pour centrer
             
-            // Rotation pour que la slide face vers l'extérieur du cercle
-            const rotateY = offset * 72 + 180; // +180° pour faire face à l'extérieur
+            // Rotation pour que la slide soit lisible et face vers nous
+            const rotateY = offset * 72; // Rotation simple sans inversion
             
             // Scale : plus petit quand éloigné
-            const scale = isActive ? 1 : Math.max(0.5, 1 - absOffset * 0.15);
+            const scale = isActive ? 1 : Math.max(0.65, 1 - absOffset * 0.12); // Slides adjacentes plus grandes
             
-            // Opacity : visible jusqu'à 2 positions
-            const opacity = Math.abs(offset) > 2 ? 0 : isActive ? 1 : Math.max(0.2, 1 - absOffset * 0.35);
+            // Opacity : slides adjacentes bien visibles
+            const opacity = Math.abs(offset) > 2 ? 0 : isActive ? 1 : Math.max(0.5, 1 - absOffset * 0.25); // Opacité augmentée
             
             return (
               <div
