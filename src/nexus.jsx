@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 export default function NexusCarousel() {
@@ -348,8 +347,8 @@ export default function NexusCarousel() {
             const circleX = Math.sin(angle) * radius;
             const circleZ = Math.cos(angle) * radius - radius; // -radius pour centrer
             
-            // Rotation pour que la slide face vers le centre
-            const rotateY = -offset * 72; // Rotation inverse à l'angle
+            // Rotation pour que la slide face vers l'extérieur du cercle
+            const rotateY = offset * 72 + 180; // +180° pour faire face à l'extérieur
             
             // Scale : plus petit quand éloigné
             const scale = isActive ? 1 : Math.max(0.5, 1 - absOffset * 0.15);
