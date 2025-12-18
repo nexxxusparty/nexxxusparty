@@ -338,7 +338,7 @@ export default function NexusCarousel() {
             const absOffset = Math.abs(offset);
             
             // Rayon du cercle 3D
-            const radius = isMobile ? 280 : 500; // Rayon réduit pour que les slides adjacentes soient plus visibles
+            const radius = isMobile ? 260 : 450; // Rayon encore réduit pour mieux voir les adjacentes
             
             // Angle de chaque slide sur le cercle (en degrés convertis en radians)
             const angle = (offset * 72) * (Math.PI / 180); // 72° = 360/5 slides
@@ -347,14 +347,20 @@ export default function NexusCarousel() {
             const circleX = Math.sin(angle) * radius;
             const circleZ = Math.cos(angle) * radius - radius; // -radius pour centrer
             
-            // Rotation pour que la slide soit lisible et face vers nous
-            const rotateY = offset * 72; // Rotation simple sans inversion
+            // Rotation : slides aux extrémités (±2) sont face verso
+            const isBackSide = absOffset >= 2;
+            const rotateY = isBackSide ? (offset * 72 + 180) : (offset * 72);
             
-            // Scale : plus petit quand éloigné
-            const scale = isActive ? 1 : Math.max(0.65, 1 - absOffset * 0.12); // Slides adjacentes plus grandes
+            // Scale : slides adjacentes encore plus grandes
+            const scale = isActive ? 1 : Math.max(0.75, 1 - absOffset * 0.10);
             
-            // Opacity : slides adjacentes bien visibles
-            const opacity = Math.abs(offset) > 2 ? 0 : isActive ? 1 : Math.max(0.5, 1 - absOffset * 0.25); // Opacité augmentée
+            // Opacity : adjacentes très visibles, extrémités transparentes (effet fantôme)
+            let opacity;
+            if (isBackSide) {
+              opacity = 0.35; // Face verso semi-transparente
+            } else {
+              opacity = isActive ? 1 : Math.max(0.65, 1 - absOffset * 0.20);
+            }
             
             return (
               <div
@@ -367,6 +373,7 @@ export default function NexusCarousel() {
                     rotateY(${rotateY}deg)
                   `,
                   opacity: opacity,
+                  filter: isBackSide ? 'brightness(0.5)' : 'none', // Effet sombre pour le verso
                   zIndex: isActive ? 10 : Math.abs(offset) > 2 ? 0 : 5 - absOffset,
                   pointerEvents: isActive ? 'auto' : 'none',
                   transformStyle: 'preserve-3d',
